@@ -27,12 +27,14 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 4000;
 const DATABASE = "mongodb+srv://pbkale25:Pankaj5151@cluster0.pr4uyu3.mongodb.net/Crud?retryWrites=true&w=majority&appName=Cluster0";
 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
