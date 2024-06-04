@@ -29,13 +29,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 4000;
-const url = "mongodb+srv://pbkale25:Pankaj5151@cluster0.pr4uyu3.mongodb.net/Crud?retryWrites=true&w=majority&appName=Cluster0";
+const DATABASE = "mongodb+srv://pbkale25:Pankaj5151@cluster0.pr4uyu3.mongodb.net/Crud?retryWrites=true&w=majority&appName=Cluster0";
 
 // Middleware to parse JSON requests
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
