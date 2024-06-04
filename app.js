@@ -28,7 +28,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 const url = "mongodb+srv://pbkale25:Pankaj5151@cluster0.pr4uyu3.mongodb.net/Crud?retryWrites=true&w=majority&appName=Cluster0";
 
 // Middleware to parse JSON requests
