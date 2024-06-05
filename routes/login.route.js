@@ -1,27 +1,44 @@
 const express = require('express');
+const { body, validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
 const LoginUser = require('../models/loginUser.model');
 const router = express.Router();
 
+// Secret key for JWT (store it in environment variable in production)
+const JWT_SECRET = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+
 // Login User
-router.post('/', async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    // console.log(`Attempting login with username: ${username} and password: ${password}`);
-    const loginuser = await LoginUser.findOne({ username, password });
-    // console.log(loginuser)
-
-    if (loginuser) {
-      // console.log('Login successful',loginuser);
-      res.status(200).json({ message: 'Login successful' });
-    } else {
-      // console.log('Invalid credentials',loginuser);
-      res.status(401).json({ message: 'Invalid credentials' });
+router.post(
+  '/',
+  [
+    // Validation middleware
+    body('username').notEmpty().withMessage('Username is required'),
+    body('password').notEmpty().withMessage('Password is required')
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-  } catch (error) {
-    // console.error('Error during login:', error);
-    res.status(500).json({ message: 'Internal server error' });
+
+    const { username, password } = req.body;
+
+    try {
+      // Attempt to find the user with the provided credentials
+      const loginuser = await LoginUser.findOne({ username, password });
+
+      if (loginuser) {
+        // Generate JWT
+        const token = jwt.sign({ id: loginuser._id, username: loginuser.username }, JWT_SECRET, { expiresIn: '1h' });
+
+        res.status(200).json({ message: 'Login successful', token });
+      } else {
+        res.status(401).json({ message: 'Invalid credentials' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
   }
-});
+);
 
 module.exports = router;

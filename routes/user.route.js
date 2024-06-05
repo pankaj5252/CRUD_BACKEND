@@ -1,26 +1,48 @@
 const express = require('express');
+const { body, validationResult } = require('express-validator');
 const User = require('../models/user.model');
 const router = express.Router();
 
 // Register user
-router.post('/', async (req, res) => {
-  const { name, email, username, password } = req.body;
+router.post(
+  '/',
+  [
+    // Validation middleware
+    body('name').notEmpty().withMessage('Name is required'),
+    body('email').isEmail().withMessage('Valid email is required'),
+    body('username').notEmpty().withMessage('Username is required'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  try {
-    const user = new User({
-      name,
-      email,
-      username,
-      password
-    });
+    const { name, email, username, password } = req.body;
 
-    await user.save();
+    try {
+      // Check if user already exists
+      const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+      if (existingUser) {
+        return res.status(400).json({ message: 'User with this email or username already exists' });
+      }
 
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error registering user' });
+      const user = new User({
+        name,
+        email,
+        username,
+        password
+      });
+
+      await user.save();
+
+      res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error registering user' });
+    }
   }
-});
+);
 
 // Get Users
 router.get('/', async (req, res) => {
