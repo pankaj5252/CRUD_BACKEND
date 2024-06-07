@@ -5,7 +5,7 @@ const LoginUser = require('../models/loginUser.model');
 const router = express.Router();
 
 // Secret key for JWT (store it in environment variable in production)
-const JWT_SECRET = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+const JWT_SECRET =process.env.JWT_SECRET;
 
 // Login User
 router.post(
