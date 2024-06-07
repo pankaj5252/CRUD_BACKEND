@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 4000;
-const DATABASE = "mongodb+srv://pbkale25:Pankaj5151@cluster0.pr4uyu3.mongodb.net/Crud?retryWrites=true&w=majority&appName=Cluster0";
+const DATABASE = process.env.DATABASE;
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -22,12 +22,12 @@ app.get('/', (req, res) => {
 // Use routes
 const userRoutes = require('./routes/user.route');
 const loginRoutes = require('./routes/login.route');
-const addEmployee = require('./routes/addEmployee.route');
+// const addEmployee = require('./routes/addEmployee.route');
 
 app.use('/users', userRoutes);
 app.use('/register', userRoutes);
 app.use('/login', loginRoutes);
-app.use('/addEmployee', addEmployee);
+// app.use('/addEmployee', addEmployee);
 
 // Start the server
 app.listen(port, () => {
