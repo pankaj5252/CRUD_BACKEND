@@ -2,15 +2,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 4000;
-const DATABASE = process.env.DATABASE;
+require('dotenv').config();
+const port = process.env.PORT;
+const DATABASE_URI = process.env.DATABASE ;
 
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect(DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -22,12 +23,15 @@ app.get('/', (req, res) => {
 // Use routes
 const userRoutes = require('./routes/user.route');
 const loginRoutes = require('./routes/login.route');
-// const addEmployee = require('./routes/addEmployee.route');
+const addEmployee = require('./routes/addEmployee');
+const getEmployee = require("./routes/getEmployee");
 
 app.use('/users', userRoutes);
 app.use('/register', userRoutes);
 app.use('/login', loginRoutes);
-// app.use('/addEmployee', addEmployee);
+app.use('/addEmployee', addEmployee);
+app.use('/employees', addEmployee);
+app.use('/allEmployees',getEmployee);
 
 // Start the server
 app.listen(port, () => {
