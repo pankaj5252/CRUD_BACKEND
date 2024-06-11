@@ -32,6 +32,7 @@ app.use('/login', loginRoutes);
 app.use('/addEmployee', addEmployee);
 app.use('/employees', addEmployee);
 app.use('/allEmployees',getEmployee);
+app.use('/deleteEmployees:id',getEmployee);
 
 // Start the server
 app.listen(port, () => {

@@ -57,4 +57,25 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 
+// Delete employee information with login user
+router.delete('/:id', authMiddleware, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const employee = await AddEmployee.findOneAndDelete({ _id: id, user: req.user._id });
+        
+        if (!employee) {
+            return res.status(404).json({ error: 'Employee not found or not authorized' });
+        }
+
+        res.status(200).json({ message: 'Employee deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting employee:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+
+
+
+
 module.exports = router;
