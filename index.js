@@ -30,6 +30,7 @@ app.use('/users', userRoutes);
 app.use('/register', userRoutes);
 app.use('/login', loginRoutes);
 app.use('/addEmployee', addEmployee);
+app.use('/api', getEmployee);
 app.use('/employees', addEmployee);
 app.use('/allEmployees',getEmployee);
 app.use('/deleteEmployees:id',getEmployee);
