@@ -10,17 +10,7 @@ const JWT_SECRET =process.env.JWT_SECRET;
 // Login User
 router.post(
   '/',
-  [
-    // Validation middleware
-    body('username').notEmpty().withMessage('Username is required'),
-    body('password').notEmpty().withMessage('Password is required')
-  ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const { username, password } = req.body;
 
     try {

@@ -6,19 +6,7 @@ const router = express.Router();
 // Register user
 router.post(
   '/',
-  [
-    // Validation middleware
-    body('name').notEmpty().withMessage('Name is required'),
-    body('email').isEmail().withMessage('Valid email is required'),
-    body('username').notEmpty().withMessage('Username is required'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
-  ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const { name, email, username, password } = req.body;
 
     try {
