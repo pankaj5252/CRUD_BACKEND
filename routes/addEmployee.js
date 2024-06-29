@@ -13,7 +13,7 @@ router.post('/', authMiddleware, [
     body('age').notEmpty().isInt({ min: 18 }).withMessage('Age must be at least 18'),
     body('salary').notEmpty().isNumeric().withMessage('Please enter salary'),
     body('joining_date').notEmpty().withMessage('Please enter joining date'),
-    body('retired_date').notEmpty().withMessage('Please enter retired date'),
+    body('date_of_birth').notEmpty().withMessage('Please enter date_of_birth'),
     body('status').notEmpty().withMessage('Please enter status')
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -21,7 +21,7 @@ router.post('/', authMiddleware, [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { fname, lname, mobile, email, address, age, salary, joining_date, retired_date, status } = req.body;
+    const { fname, lname, mobile, email, address, age, salary, joining_date, date_of_birth, status } = req.body;
     const user = req.user;
     try {
         const newEmployee = new AddEmployee({
@@ -33,7 +33,7 @@ router.post('/', authMiddleware, [
             age,
             salary,
             joining_date,
-            retired_date,
+            date_of_birth,
             status,
             user: user._id
         });
@@ -62,7 +62,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     const { id } = req.params;
     try {
         const employee = await AddEmployee.findOneAndDelete({ _id: id, user: req.user._id });
-        
+
         if (!employee) {
             return res.status(404).json({ error: 'Employee not found or not authorized' });
         }

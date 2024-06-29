@@ -9,7 +9,7 @@ const addEmployeeSchema = new mongoose.Schema({
     age: { type: Number, required: [true, 'Age is required'], min: [18, 'Age must be at least 18'] },
     salary: { type: Number, required: [true, 'Salary is required'] },
     joining_date: { type: String, required: [true, 'Joining date is required'] },
-    retired_date: { type: String, required: [true, 'Retired date is required'] },
+    date_of_birth: { type: String, required: [true, 'Retired date is required'] },
     status: { type: String, required: [true, 'Status is required'] },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: [true, 'User reference is required'] }
 }, { collection: 'employees' });
